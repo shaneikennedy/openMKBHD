@@ -13,5 +13,5 @@ authentication required
 
 ```
 mkdir images
-curl https://storage.googleapis.com/panels-api/data/20240916/media-1a-i-p\~s | jq -r '.data | to_entries | map(.value.dhd) | select(. != null)[]' | while read url; do filename=$(basename "$url" | sed 's/\?.*//'); wget "$url" -O "./images/${filename%%.*}-image.png"; done
+curl https://storage.googleapis.com/panels-api/data/20240916/media-1a-i-p\~s | jq -r '.data | to_entries | map(.value.dhd)[]' | grep -v null | while read url; do filename=$(basename "$url" | sed 's/\?.*//'); echo "Downloading $filename..."; curl -s "$url" -o "./images/${filename%%.*}-image.png"; done;
 ```
